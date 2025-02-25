@@ -1,12 +1,5 @@
-import { StatusBar, barStyle } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { auth } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
@@ -29,8 +22,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Recipe App</Text>
-      <StatusBar barStyle="auto" />
+      <Text style={styles.text}>Recipe App</Text>
+      <StatusBar hidden />
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.6}
@@ -61,6 +54,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  text: {
+    fontSize: 50,
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
     backgroundColor: "#FFF0BD",
