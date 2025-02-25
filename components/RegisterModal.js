@@ -1,19 +1,37 @@
 import { getApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { Modal, TextInput, View, Text, TouchableOpacity } from "react-native";
+import {
+  Modal,
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 
 const RegisterModal = ({ visible, onClose, onSubmit }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = () => {
-    // Call the onSubmit function passed as prop to send data
-    onSubmit({ name, email, password });
-    // Clear the form after submission
-    setName("");
-    setEmail("");
-    setPassword("");
+  const auth = getAuth(getApp());
+
+  const handleSubmit = async () => {
+    if (!email || !password || !name) {
+      Alert.alert("Error", "Please fill in all fields");
+      return;
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert("Success", "User registered successfully!");
+      setName("");
+      setEmail("");
+      setPassword("");
+      onClose(); // Close modal after success
+    } catch (error) {
+      Alert.alert("Registration Failed", error.message);
+    }
   };
 
   return (
