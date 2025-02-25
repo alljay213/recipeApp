@@ -1,15 +1,6 @@
 import { getApp } from "firebase/app";
 import React, { useState } from "react";
-import {
-  Modal,
-  TextInput,
-  Button,
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { Modal, TextInput, View, Text, TouchableOpacity } from "react-native";
 
 const RegisterModal = ({ visible, onClose, onSubmit }) => {
   const [name, setName] = useState("");
@@ -55,15 +46,12 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
             onChangeText={setPassword}
             secureTextEntry
           />
-          <TouchableOpacity
-            style={styles.buttonRegister}
-            onPress={handleSubmit}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.buttonClose}
+            style={styles.button}
             title="Close"
             onPress={onClose}
           >
@@ -101,7 +89,7 @@ const styles = {
     borderRadius: 5,
     fontSize: 20,
   },
-  buttonRegister: {
+  button: {
     backgroundColor: "#E50046",
     padding: 15,
     borderRadius: 10,
@@ -111,13 +99,6 @@ const styles = {
   buttonText: {
     color: "#FFF",
     fontSize: 25,
-  },
-  buttonClose: {
-    backgroundColor: "#E50046",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    width: "50%",
   },
 };
 
