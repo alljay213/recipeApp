@@ -1,6 +1,8 @@
-import { getApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
+
 import {
   Modal,
   TextInput,
@@ -15,22 +17,33 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const auth = getAuth(getApp());
-
   const handleSubmit = async () => {
     if (!email || !password || !name) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      Alert.alert("Success", "User registered successfully!");
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      await addDoc(collection(db, "users"), {
+        uid: user.uid,
+        name,
+        email,
+      });
+      Alert.alert("Success", "User registered successfully");
+      console.log("User registered:", user.uid);
       setName("");
       setEmail("");
       setPassword("");
-      onClose(); // Close modal after success
+      onClose();
     } catch (error) {
-      Alert.alert("Registration Failed", error.message);
+      Alert.alert("Error", error.message);
+      console.error("Registration Error:", error.message);
     }
   };
 
