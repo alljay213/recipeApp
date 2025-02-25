@@ -65,7 +65,7 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
 
 const styles = {
   container: {
-    backgroundColor: "#FFF0BD",
+    backgroundColor: "#FDAB9E",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

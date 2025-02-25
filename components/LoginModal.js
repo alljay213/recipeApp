@@ -52,7 +52,7 @@ const LoginModal = ({ visible, onClose, onSubmit }) => {
 
 const styles = {
   container: {
-    backgroundColor: "#FFF0BD",
+    backgroundColor: "#C7DB9C",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

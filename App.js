@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+import { StatusBar, barStyle } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -29,6 +29,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text>Recipe App</Text>
+      <StatusBar barStyle="auto" />
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.6}
