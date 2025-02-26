@@ -62,7 +62,6 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
         setAlertMessage(error.message);
       }
       setAlertVisible(true);
-      // Comment out or remove the console.error statement
       // console.error("Registration Error:", error.message);
     }
   };
