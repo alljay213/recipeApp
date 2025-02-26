@@ -5,14 +5,7 @@ import { ref, set } from "firebase/database";
 import { auth, db, realtimeDb } from "../firebaseConfig";
 import CustomAlert from "./CustomAlert";
 
-import {
-  Modal,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { Modal, TextInput, View, Text, TouchableOpacity } from "react-native";
 
 const RegisterModal = ({ visible, onClose, onSubmit }) => {
   const [name, setName] = useState("");
@@ -69,7 +62,8 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
         setAlertMessage(error.message);
       }
       setAlertVisible(true);
-      console.error("Registration Error:", error.message);
+      // Comment out or remove the console.error statement
+      // console.error("Registration Error:", error.message);
     }
   };
 
