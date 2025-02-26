@@ -15,6 +15,13 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
 
+  const handleClose = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    onClose();
+  };
+
   const handleSubmit = async () => {
     if (!email || !password || !name) {
       setAlertTitle("Error");
@@ -47,10 +54,7 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
       setAlertMessage("User registered successfully");
       setAlertVisible(true);
       console.log("User registered:", user.uid);
-      setName("");
-      setEmail("");
-      setPassword("");
-      onClose();
+      handleClose();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         setAlertTitle("Error");
@@ -71,7 +75,7 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
       visible={visible}
       transparent={true}
       animationType="slide"
-      onRequestClose={onClose}
+      onRequestClose={handleClose}
     >
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
@@ -103,7 +107,7 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
           <TouchableOpacity
             style={styles.button}
             title="Close"
-            onPress={onClose}
+            onPress={handleClose}
           >
             <Text style={styles.buttonText}>Close</Text>
           </TouchableOpacity>
