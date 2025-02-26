@@ -51,7 +51,14 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
       setPassword("");
       onClose();
     } catch (error) {
-      Alert.alert("Error", error.message);
+      if (error.code === "auth/email-already-in-use") {
+        Alert.alert(
+          "Error",
+          "The email address is already in use by another account."
+        );
+      } else {
+        Alert.alert("Error", error.message);
+      }
       console.error("Registration Error:", error.message);
     }
   };
