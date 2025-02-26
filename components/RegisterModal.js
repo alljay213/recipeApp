@@ -3,6 +3,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, set } from "firebase/database";
 import { auth, db, realtimeDb } from "../firebaseConfig";
+import CustomAlert from "./CustomAlert";
 
 import {
   Modal,
@@ -17,10 +18,15 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   const handleSubmit = async () => {
     if (!email || !password || !name) {
-      Alert.alert("Error", "Please fill in all fields");
+      setAlertTitle("Error");
+      setAlertMessage("Please fill in all fields");
+      setAlertVisible(true);
       return;
     }
     try {
@@ -44,7 +50,9 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
         email,
       });
 
-      Alert.alert("Success", "User registered successfully");
+      setAlertTitle("Success");
+      setAlertMessage("User registered successfully");
+      setAlertVisible(true);
       console.log("User registered:", user.uid);
       setName("");
       setEmail("");
@@ -52,13 +60,15 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
       onClose();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
-        Alert.alert(
-          "Error",
+        setAlertTitle("Error");
+        setAlertMessage(
           "The email address is already in use by another account."
         );
       } else {
-        Alert.alert("Error", error.message);
+        setAlertTitle("Error");
+        setAlertMessage(error.message);
       }
+      setAlertVisible(true);
       console.error("Registration Error:", error.message);
     }
   };
@@ -106,6 +116,12 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <CustomAlert
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
     </Modal>
   );
 };
