@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import { auth, db } from "../firebaseConfig";
+import { ref, set } from "firebase/database";
+import { auth, db, realtimeDb } from "../firebaseConfig";
 
 import {
   Modal,
@@ -30,11 +31,19 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
       );
       const user = userCredential.user;
 
+      // Add user data to Firestore
       await addDoc(collection(db, "users"), {
         uid: user.uid,
         name,
         email,
       });
+
+      // Add user data to Realtime Database
+      await set(ref(realtimeDb, "users/" + user.uid), {
+        name,
+        email,
+      });
+
       Alert.alert("Success", "User registered successfully");
       console.log("User registered:", user.uid);
       setName("");
