@@ -1,17 +1,48 @@
-import { getApp } from "firebase/app";
 import React, { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import CustomAlert from "./CustomAlert";
 import { Modal, TextInput, View, Text, TouchableOpacity } from "react-native";
 
-const LoginModal = ({ visible, onClose, onSubmit }) => {
+const LoginModal = ({ visible, onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
-  const handleSubmit = () => {
-    // Call the onSubmit function passed as prop to send data
-    onSubmit({ email, password });
-    // Clear the form after submission
-    setEmail("");
-    setPassword("");
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      setAlertTitle("Error");
+      setAlertMessage("Please fill in all fields");
+      setAlertVisible(true);
+      return;
+    }
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      setAlertTitle("Success");
+      setAlertMessage("User logged in successfully");
+      setAlertVisible(true);
+      console.log("User logged in:", user.uid);
+
+      // Clear the form after successful login
+      setEmail("");
+      setPassword("");
+
+      // Call the onLoginSuccess function passed as prop to navigate to UserDashboard
+      onLoginSuccess(user);
+    } catch (error) {
+      setAlertTitle("Error");
+      setAlertMessage(error.message);
+      setAlertVisible(true);
+      // console.error("Login Error:", error.message);
+    }
   };
 
   return (
@@ -46,6 +77,12 @@ const LoginModal = ({ visible, onClose, onSubmit }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <CustomAlert
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
     </Modal>
   );
 };
@@ -88,4 +125,5 @@ const styles = {
     fontSize: 25,
   },
 };
+
 export default LoginModal;
