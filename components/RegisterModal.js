@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import { ref, set } from "firebase/database";
-import { auth, db, realtimeDb } from "../firebaseConfig";
+import { auth, db } from "../firebaseConfig";
 import CustomAlert from "./CustomAlert";
 
 import { Modal, TextInput, View, Text, TouchableOpacity } from "react-native";
@@ -40,12 +39,6 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
       // Add user data to Firestore
       await addDoc(collection(db, "users"), {
         uid: user.uid,
-        name,
-        email,
-      });
-
-      // Add user data to Realtime Database
-      await set(ref(realtimeDb, "users/" + user.uid), {
         name,
         email,
       });
