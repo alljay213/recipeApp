@@ -47,7 +47,9 @@ const RegisterModal = ({ visible, onClose, onSubmit }) => {
       setAlertMessage("User registered successfully");
       setAlertVisible(true);
       console.log("User registered:", user.uid);
-      handleClose();
+      setName("");
+      setEmail("");
+      setPassword("");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         setAlertTitle("Error");
